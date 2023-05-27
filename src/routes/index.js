@@ -9,6 +9,8 @@ import DashboardLayout from '../layouts/dashboard';
 import { PATH_AFTER_LOGIN } from '../config-global';
 //
 import {
+  // AUTH
+  RegisterPage,
   Page404,
   PageOne,
   PageTwo,
@@ -32,6 +34,14 @@ export default function Router() {
           element: (
             <GuestGuard>
               <LoginPage />
+            </GuestGuard>
+          ),
+        },
+        {
+          path: 'register',
+          element: (
+            <GuestGuard>
+              <RegisterPage />
             </GuestGuard>
           ),
         },

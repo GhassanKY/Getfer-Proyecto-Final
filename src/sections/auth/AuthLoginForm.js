@@ -20,7 +20,7 @@ export default function AuthLoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    email: Yup.string().required('Correo Obligatorio').email('Correo electronico invalido'),
     password: Yup.string().required('Password is required'),
   });
 
@@ -61,11 +61,11 @@ export default function AuthLoginForm() {
       <Stack spacing={3}>
         {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="Correo Electronico" />
 
         <RHFTextField
           name="password"
-          label="Password"
+          label="Contraseña"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -81,7 +81,7 @@ export default function AuthLoginForm() {
 
       <Stack alignItems="flex-end" sx={{ my: 2 }}>
         <Link variant="body2" color="inherit" underline="always">
-          Forgot password?
+          Olvido la contraseña?
         </Link>
       </Stack>
 
@@ -101,7 +101,7 @@ export default function AuthLoginForm() {
           },
         }}
       >
-        Login
+        Iniciar Sesion
       </LoadingButton>
     </FormProvider>
   );
