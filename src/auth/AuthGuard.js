@@ -4,7 +4,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 // components
 import LoadingScreen from '../components/loading-screen';
 //
-import Login from '../pages/LoginPage';
+import Login from '../pages/auth/LoginPage';
 import { useAuthContext } from './useAuthContext';
 
 // ----------------------------------------------------------------------
