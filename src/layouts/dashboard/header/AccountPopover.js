@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
 import { PATH_AUTH } from '../../../routes/paths';
+// Thunks
+import { userLogout } from '../../../store/slice/users/users.thunk';
 // auth
 import { useAuthContext } from '../../../auth/useAuthContext';
 // components
@@ -34,6 +37,7 @@ const OPTIONS = [
 
 export default function AccountPopover() {
   const navigate = useNavigate();
+  const distpach = useDispatch();
 
   const { user, logout } = useAuthContext();
 
@@ -51,7 +55,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      logout();
+      distpach(userLogout());
       navigate(PATH_AUTH.login, { replace: true });
       handleClosePopover();
     } catch (error) {
@@ -111,7 +115,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          Cerrar Sesión
         </MenuItem>
       </MenuPopover>
     </>

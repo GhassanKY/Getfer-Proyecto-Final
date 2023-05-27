@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 // components
 import LoadingScreen from '../components/loading-screen';
 //
@@ -14,7 +15,10 @@ AuthGuard.propTypes = {
 };
 
 export default function AuthGuard({ children }) {
-  const { isAuthenticated, isInitialized } = useAuthContext();
+  const { isInitialized } = useAuthContext();
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  console.log('isAuthenticated', isAuthenticated);
 
   const { pathname } = useLocation();
 

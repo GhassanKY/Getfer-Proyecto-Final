@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
+import { setuser } from '../store/slice/users/users.slice';
 // utils
-import axios from '../utils/axios';
+import axiosInstance from '../utils/axios';
 import localStorageAvailable from '../utils/localStorageAvailable';
 //
 import { isValidToken, setSession } from './utils';
@@ -63,8 +65,11 @@ AuthProvider.propTypes = {
   children: PropTypes.node,
 };
 
+// ----------------------------------------------------------------------
+// Esta logica nos permite mantener la sesion activa
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const dispatchRdx = useDispatch();
 
   const storageAvailable = localStorageAvailable();
 
@@ -72,18 +77,21 @@ export function AuthProvider({ children }) {
     try {
       const accessToken = storageAvailable ? localStorage.getItem('accessToken') : '';
 
-      if (accessToken && isValidToken(accessToken)) {
+      console.log(accessToken);
+
+      if (accessToken) {
         setSession(accessToken);
 
-        const response = await axios.get('/api/account/my-account');
+        // const response = await axiosInstance.get('/Empleado');
 
-        const { user } = response.data;
+        // const { user } = response.data;
+
+        dispatchRdx(setuser({ option: 'isAuthenticated', value: true }));
 
         dispatch({
           type: 'INITIAL',
           payload: {
             isAuthenticated: true,
-            user,
           },
         });
       } else {
@@ -105,33 +113,54 @@ export function AuthProvider({ children }) {
         },
       });
     }
-  }, [storageAvailable]);
+  }, [storageAvailable, dispatchRdx]);
 
   useEffect(() => {
     initialize();
   }, [initialize]);
 
   // LOGIN
-  const login = useCallback(async (email, password) => {
-    const response = await axios.post('/api/account/login', {
-      email,
+  const login = useCallback(async (user, password) => {
+    const res = await axiosInstance.post('/Empleado/Login', {
+      user,
       password,
     });
-    const { accessToken, user } = response.data;
 
-    setSession(accessToken);
+    const { token, idEmpleado, empleado, usuario } = res.data.datos;
+
+    console.log(empleado);
+
+    setSession(token);
 
     dispatch({
       type: 'LOGIN',
       payload: {
-        user,
+        idEmpleado,
+        user: { displayName: empleado.nombre, role: usuario },
       },
     });
+
+    return true;
+
+    // const response = await axios.post('/api/account/login', {
+    //   email,
+    //   password,
+    // });
+    // const { accessToken, user } = response.data;
+
+    // setSession(accessToken);
+
+    // dispatch({
+    //   type: 'LOGIN',
+    //   payload: {
+    //     user,
+    //   },
+    // });
   }, []);
 
   // REGISTER
   const register = useCallback(async (email, password, firstName, lastName) => {
-    const response = await axios.post('/api/account/register', {
+    const response = await axiosInstance.post('/api/account/register', {
       email,
       password,
       firstName,

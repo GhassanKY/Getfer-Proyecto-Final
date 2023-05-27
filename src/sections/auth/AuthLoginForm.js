@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
+
 // form
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,6 +10,8 @@ import { Link, Stack, Alert, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // auth
 import { useAuthContext } from '../../auth/useAuthContext';
+// Thunk
+import { userLogin } from '../../store/slice/users/users.thunk';
 // components
 import Iconify from '../../components/iconify';
 import FormProvider, { RHFTextField } from '../../components/hook-form';
@@ -16,6 +20,7 @@ import FormProvider, { RHFTextField } from '../../components/hook-form';
 
 export default function AuthLoginForm() {
   const { login } = useAuthContext();
+  const distpach = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -24,14 +29,8 @@ export default function AuthLoginForm() {
     password: Yup.string().required('Password is required'),
   });
 
-  const defaultValues = {
-    email: 'demo@minimals.cc',
-    password: 'demo1234',
-  };
-
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
-    defaultValues,
   });
 
   const {
@@ -43,11 +42,9 @@ export default function AuthLoginForm() {
 
   const onSubmit = async (data) => {
     try {
-      await login(data.email, data.password);
+      distpach(userLogin(data));
     } catch (error) {
       console.error(error);
-
-      reset();
 
       setError('afterSubmit', {
         ...error,
