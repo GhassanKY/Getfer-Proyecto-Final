@@ -5,6 +5,8 @@ const userSlice = createSlice({
   initialState: {
     user: [],
     isAuthenticated: false,
+    msgError: '',
+    isLoading: false,
   },
   reducers: {
     setuser: (state, action) => {

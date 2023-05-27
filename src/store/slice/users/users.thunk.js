@@ -4,12 +4,16 @@ import { setuser } from './users.slice';
 
 export const userLogin = (data) => async (dispatch) => {
   try {
+    dispatch(setuser({ option: 'isLoading', value: true }));
+    dispatch(setuser({ option: 'msgError', value: '' }));
     const res = await axiosInstance.post('/users/login', data);
     setSession(res.data.token);
     dispatch(setuser({ option: 'isAuthenticated', value: true }));
     console.log(res.data);
   } catch (error) {
-    console.log(error.error);
+    dispatch(setuser({ option: 'msgError', value: error }));
+    dispatch(setuser({ option: 'isLoading', value: false }));
+    console.log(error);
   }
 };
 

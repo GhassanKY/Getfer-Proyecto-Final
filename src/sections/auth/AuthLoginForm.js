@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 
 // form
@@ -21,6 +21,9 @@ import FormProvider, { RHFTextField } from '../../components/hook-form';
 export default function AuthLoginForm() {
   const { login } = useAuthContext();
   const distpach = useDispatch();
+  const { msgError, isLoading } = useSelector((state) => state.user);
+
+  console.log('msgError', msgError);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -56,7 +59,9 @@ export default function AuthLoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+        {msgError.error && (
+          <Alert severity="error">{msgError.error.code === 1002 && 'Credenciales Invalidas'}</Alert>
+        )}
 
         <RHFTextField name="email" label="Correo Electronico" />
 
@@ -88,7 +93,7 @@ export default function AuthLoginForm() {
         size="large"
         type="submit"
         variant="contained"
-        loading={isSubmitSuccessful || isSubmitting}
+        loading={isLoading}
         sx={{
           bgcolor: 'text.primary',
           color: (theme) => (theme.palette.mode === 'light' ? 'common.white' : 'grey.800'),
