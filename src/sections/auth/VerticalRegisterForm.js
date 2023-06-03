@@ -7,9 +7,19 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
+import axios from 'axios';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { Alert, AlertTitle, Card, CardContent, CardHeader, Container, Stack, alpha } from '@mui/material';
+import {
+  Alert,
+  AlertTitle,
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  Stack,
+  alpha,
+} from '@mui/material';
 import { Navigate } from 'react-router';
 import { FormProvider, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,7 +28,6 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 import EmailSuccess from '../../animation/email-succes/EmailSuccess';
 import { RHFTextField } from '../../components/hook-form';
 import { Upload } from '../../components/upload';
-import { userRegister } from '../../store/slice/users/users.thunk';
 
 export default function VerticalRegisterForm() {
   const [activeStep, setActiveStep] = React.useState(0);
@@ -87,17 +96,18 @@ export default function VerticalRegisterForm() {
     }
 
     // Verifica si los campos que representan archivos están vacíos
-    const emptyFileFields = currentStepFields.filter((field) =>
-      stepFields.includes(field) && !methods.getValues(field)
+    const emptyFileFields = currentStepFields.filter(
+      (field) => stepFields.includes(field) && !methods.getValues(field)
     );
 
     // Verifica si los campos de texto están vacíos
     const emptyTextFields = currentStepFields.filter(
       (field) =>
         !stepFields.includes(field) &&
-        (typeof methods.getValues(field) === 'string' ? methods.getValues(field).trim() === '' : !methods.getValues(field))
+        (typeof methods.getValues(field) === 'string'
+          ? methods.getValues(field).trim() === ''
+          : !methods.getValues(field))
     );
-
 
     if (emptyFileFields.length === 0 && emptyTextFields.length === 0) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -117,41 +127,50 @@ export default function VerticalRegisterForm() {
     resolver: yupResolver(RegisterSchema),
   });
 
-  const camaraComercioRender = useCallback((acceptedFiles) => {
-    const newFile = acceptedFiles[0];
-    if (newFile) {
-      setcamaraComercio(
-        Object.assign(newFile, {
-          preview: URL.createObjectURL(newFile),
-        })
-      );
-      methods.setValue('camaraComercio', newFile, { shouldValidate: true });
-    }
-  }, [methods]);
+  const camaraComercioRender = useCallback(
+    (acceptedFiles) => {
+      const newFile = acceptedFiles[0];
+      if (newFile) {
+        setcamaraComercio(
+          Object.assign(newFile, {
+            preview: URL.createObjectURL(newFile),
+          })
+        );
+        methods.setValue('camaraComercio', newFile, { shouldValidate: true });
+      }
+    },
+    [methods]
+  );
 
-  const businessRegistrationRender = useCallback((acceptedFiles) => {
-    const newFile = acceptedFiles[0];
-    if (newFile) {
-      setbusinessRegistration(
-        Object.assign(newFile, {
-          preview: URL.createObjectURL(newFile),
-        })
-      );
-      methods.setValue('businessRegistration', newFile, { shouldValidate: true });
-    }
-  }, [methods]);
+  const businessRegistrationRender = useCallback(
+    (acceptedFiles) => {
+      const newFile = acceptedFiles[0];
+      if (newFile) {
+        setbusinessRegistration(
+          Object.assign(newFile, {
+            preview: URL.createObjectURL(newFile),
+          })
+        );
+        methods.setValue('businessRegistration', newFile, { shouldValidate: true });
+      }
+    },
+    [methods]
+  );
 
-  const indentificationCardRender = useCallback((acceptedFiles) => {
-    const newFile = acceptedFiles[0];
-    if (newFile) {
-      setidentificationCard(
-        Object.assign(newFile, {
-          preview: URL.createObjectURL(newFile),
-        })
-      );
-      methods.setValue('identificationCard', newFile, { shouldValidate: true });
-    }
-  }, [methods]);
+  const indentificationCardRender = useCallback(
+    (acceptedFiles) => {
+      const newFile = acceptedFiles[0];
+      if (newFile) {
+        setidentificationCard(
+          Object.assign(newFile, {
+            preview: URL.createObjectURL(newFile),
+          })
+        );
+        methods.setValue('identificationCard', newFile, { shouldValidate: true });
+      }
+    },
+    [methods]
+  );
 
   const {
     reset,
@@ -169,12 +188,15 @@ export default function VerticalRegisterForm() {
       formData.append('identificationCard', identificationCard);
       formData.append('camaraComercio', camaraComercio);
 
-    
+      const res = await axios.post('http://localhost:4001/api/v1/customers/register', data, {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      });
 
-      dispatch(userRegister(formData));
+      console.log(res.data);
     } catch (error) {
       console.error(error);
-      reset();
       setError('afterSubmit', {
         ...error,
         message: error.message || error,
@@ -317,7 +339,9 @@ export default function VerticalRegisterForm() {
           {steps.map((step, index) => (
             <Step key={index}>
               <StepLabel
-                optional={index === 5 ? <Typography variant="caption">Último paso</Typography> : null}
+                optional={
+                  index === 5 ? <Typography variant="caption">Último paso</Typography> : null
+                }
               >
                 {step.label}
               </StepLabel>

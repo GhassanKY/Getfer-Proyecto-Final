@@ -21,22 +21,6 @@ export const userLogin = (data) => async (dispatch) => {
   }
 };
 
-export const userRegister = (data) => async (dispatch) => {
-  try {
-    console.log(data.get('identificationCard'))
-    const res = await axios.post('http://145.239.34.30:3005/api/v1/customers/register', {
-      header: {
-        "content-type": "multipart/form-data"
-      },
-      data
-    });
-    console.log(res.data);
-  } catch (error) {
-    console.log(error);
-  }
-  console.log(data);
-};
-
 export const userLogout = () => async (dispatch) => {
   dispatch(setuser({ option: 'isAuthenticated', value: false }));
   setSession(null);
