@@ -20,6 +20,16 @@ export const userLogin = (data) => async (dispatch) => {
   }
 };
 
+export const userRegister = (data) => async (dispatch) => {
+  try {
+    const res = await axiosInstance.post('/customers/register', data);
+    console.log(res.data);
+  } catch (error) {
+    console.log(error);
+  }
+  console.log(data);
+};
+
 export const userLogout = () => async (dispatch) => {
   dispatch(setuser({ option: 'isAuthenticated', value: false }));
   setSession(null);
