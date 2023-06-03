@@ -23,9 +23,12 @@ export default function Register() {
             Iniciar Sesion
           </Link>
         </Stack>
+        <AuthRegisterForm />
       </Stack>
 
-      <AuthRegisterForm />
+
+        
+      
 
       {/* <Typography
         component="div"
