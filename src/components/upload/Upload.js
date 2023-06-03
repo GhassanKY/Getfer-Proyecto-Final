@@ -67,7 +67,16 @@ export default function Upload({
   const isError = isDragReject || !!error;
 
   return (
-    <Box sx={{ width: 1, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', ...sx }}>
+    <Box
+      sx={{
+        width: 1,
+        position: 'relative',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...sx,
+      }}
+    >
       <StyledDropZone
         {...getRootProps()}
         sx={{
@@ -157,43 +166,40 @@ Placeholder.propTypes = {
 };
 
 function Placeholder({ sx, ...other }) {
+  return (
+    <Stack
+      spacing={3}
+      alignItems="center"
+      justifyContent="center"
+      direction="column"
+      sx={{
+        width: 1,
+        textAlign: 'center',
+        ...sx,
+      }}
+      {...other}
+    >
+      <div>
+        <Typography gutterBottom variant="h5">
+          Drop or Select file
+        </Typography>
 
-    return (
-      <Stack
-        spacing={3}
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-        sx={{
-          width: 1,
-          textAlign: 'center',
-          ...sx,
-        }}
-        {...other}
-      >
-        <div>
-          <Typography gutterBottom variant="h5">
-            Drop or Select file
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Drop files here or click
+          <Typography
+            variant="body2"
+            component="span"
+            sx={{
+              mx: 0.5,
+              color: 'primary.main',
+              textDecoration: 'underline',
+            }}
+          >
+            browse
           </Typography>
-
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Drop files here or click
-            <Typography
-              variant="body2"
-              component="span"
-              sx={{
-                mx: 0.5,
-                color: 'primary.main',
-                textDecoration: 'underline',
-              }}
-            >
-              browse
-            </Typography>
-            thorough your machine
-          </Typography>
-        </div>
-      </Stack>
-    );
-
-  }
-  
+          thorough your machine
+        </Typography>
+      </div>
+    </Stack>
+  );
+}
