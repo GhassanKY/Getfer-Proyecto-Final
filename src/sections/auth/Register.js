@@ -12,8 +12,8 @@ import AuthRegisterForm from './AuthRegisterForm';
 
 export default function Register() {
   return (
-    <LoginLayout title="Manage the job more effectively with Minimal">
-      <Stack spacing={2} sx={{ mb: 5, position: 'relative' }}>
+    <LoginLayout title="La Herramienta que tu Ferretería Necesita!">
+      <Stack spacing={2} sx={{ mb: 5, mt: 5, position: 'relative'}}>
         <Typography variant="h4">Comienza totalmente gratis</Typography>
 
         <Stack direction="row" spacing={0.5}>
