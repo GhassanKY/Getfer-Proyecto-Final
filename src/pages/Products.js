@@ -1,24 +1,28 @@
 import { Helmet } from 'react-helmet-async';
+
 // @mui
 import { Container, Typography } from '@mui/material';
+
+// Path
+import { PATH_DASHBOARD } from '../routes/paths';
+
 // components
+import CustomBreadcrumbs from '../components/custom-breadcrumbs/CustomBreadcrumbs';
 import { useSettingsContext } from '../components/settings';
 
 // ----------------------------------------------------------------------
 
-export default function PageTwo() {
+export default function Products() {
   const { themeStretch } = useSettingsContext();
 
   return (
     <>
       <Helmet>
-        <title> Page Two | Minimal UI</title>
+        <title> Productos | GetFer</title>
       </Helmet>
 
       <Container maxWidth={themeStretch ? false : 'xl'}>
-        <Typography variant="h3" component="h1" paragraph>
-          Page Two
-        </Typography>
+        <CustomBreadcrumbs heading="Productos" links={[{ name: 'Tienda' }]} />
 
         <Typography gutterBottom>
           Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc,
