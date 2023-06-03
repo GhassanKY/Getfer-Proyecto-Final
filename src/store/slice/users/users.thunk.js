@@ -7,9 +7,12 @@ export const userLogin = (data) => async (dispatch) => {
     dispatch(setuser({ option: 'isLoading', value: true }));
     dispatch(setuser({ option: 'msgError', value: '' }));
     const res = await axiosInstance.post('/users/login', data);
+    console.log(res.data.user);
     setSession(res.data.token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
+    dispatch(setuser({ option: 'user', value: res.data.user }));
     dispatch(setuser({ option: 'isAuthenticated', value: true }));
-    console.log(res.data);
+    dispatch(setuser({ option: 'isLoading', value: false }));
   } catch (error) {
     dispatch(setuser({ option: 'msgError', value: error }));
     dispatch(setuser({ option: 'isLoading', value: false }));

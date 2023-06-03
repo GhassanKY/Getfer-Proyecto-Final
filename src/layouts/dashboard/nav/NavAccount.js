@@ -1,8 +1,9 @@
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-// auth
-import { useAuthContext } from '../../../auth/useAuthContext';
+// redux
+import { useSelector } from 'react-redux';
+
 // components
 import { CustomAvatar } from '../../../components/custom-avatar';
 
@@ -19,19 +20,22 @@ const StyledRoot = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function NavAccount() {
-  const { user } = useAuthContext();
+  const { user } = useSelector((state) => state.user);
+  const { firstName, role } = JSON.parse(localStorage.getItem('user'));
+
+  console.log(firstName);
 
   return (
     <StyledRoot>
-      <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+      <CustomAvatar src={user?.photoURL} alt={firstName} name={firstName} />
 
       <Box sx={{ ml: 2, minWidth: 0 }}>
         <Typography variant="subtitle2" noWrap>
-          {user?.displayName}
+          {firstName}
         </Typography>
 
         <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
-          {user?.role}
+          {role === 'customer' ? 'Cliente' : 'Administrador'}
         </Typography>
       </Box>
     </StyledRoot>

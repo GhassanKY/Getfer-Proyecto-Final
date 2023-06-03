@@ -20,7 +20,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 
 const OPTIONS = [
   {
-    label: 'Home',
+    label: 'Inicio',
     linkTo: '/',
   },
   {
@@ -38,6 +38,7 @@ const OPTIONS = [
 export default function AccountPopover() {
   const navigate = useNavigate();
   const distpach = useDispatch();
+  const { firstName, email } = JSON.parse(localStorage.getItem('user'));
 
   const { user, logout } = useAuthContext();
 
@@ -88,17 +89,17 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={firstName} />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {firstName}
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {user?.email}
+            {email}
           </Typography>
         </Box>
 

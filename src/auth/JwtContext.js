@@ -71,13 +71,13 @@ export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const dispatchRdx = useDispatch();
 
+  console.log(children);
+
   const storageAvailable = localStorageAvailable();
 
   const initialize = useCallback(async () => {
     try {
       const accessToken = storageAvailable ? localStorage.getItem('accessToken') : '';
-
-      console.log(accessToken);
 
       if (accessToken) {
         setSession(accessToken);
